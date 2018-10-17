@@ -1,0 +1,33 @@
+# dependencies
+/ApplicationServer/node_modules
+/ApplicationServer/package-lock.json
+
+# IDEs and editors
+/ApplicationServer/.idea
+/ApplicationServer/.project
+/ApplicationServer/.classpath
+/ApplicationServer/.c9/
+/ApplicationServer/*.launch
+/ApplicationServer/.settings/
+/ApplicationServer/*.sublime-workspace
+
+# IDE - VSCode
+/ApplicationServer/.vscode/*
+/ApplicationServer/!.vscode/settings.json
+/ApplicationServer/!.vscode/tasks.json
+/ApplicationServer/!.vscode/launch.json
+/ApplicationServer/!.vscode/extensions.json
+
+# misc
+/ApplicationServer/.sass-cache
+/ApplicationServer/connect.lock
+/ApplicationServer/coverage
+/ApplicationServer/libpeerconnection.log
+/ApplicationServer/npm-debug.log
+/ApplicationServer/yarn-error.log
+/ApplicationServer/testem.log
+/ApplicationServer/typings
+
+# System Files
+.DS_Store
+Thumbs.db
