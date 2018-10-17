@@ -1,0 +1,24 @@
+{
+  "name": "mgmt",
+  "version": "0.0.1",
+  "description": "An application for registering employees and calling votes in a company",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo tests not implemented yet"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kl4rity/mgmtDapp.git"
+  },
+  "keywords": [
+    "Ethereum",
+    "Node",
+    "React"
+  ],
+  "author": "Clemens Stift",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Kl4rity/mgmtDapp/issues"
+  },
+  "homepage": "https://github.com/Kl4rity/mgmtDapp#readme"
+}
