@@ -1,0 +1,30 @@
+version: "3.3"
+
+services:
+  node:
+    container_name: node_application_server
+    build:
+      context: .
+      dockerfile: ./ApplicationServer/Dockerfile
+    ports:
+      - "3000:3000"
+      - "3001:3001"
+    env_file:
+      - ./env/app.development.env
+    volumes:
+      - ./ApplicationServer:/src
+    working_dir: /src
+    networks:
+      - node-db-network
+  
+  mongo:
+    image: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    networks: 
+      - node-db-network
+
+networks:
+  node-db-network:
+    driver: bridge
