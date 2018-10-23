@@ -20,8 +20,9 @@ Optional:
 Technologies:
 - React Frontend
 - Materialize CSS
+- Webpack
 - HTTPS
-- NodeJS backend
+- NodeJS (with TypeScript) backend
 - MongoDB
 - Docker containers / docker-compose for deployment
 - Web3 for Chain-Interactions
