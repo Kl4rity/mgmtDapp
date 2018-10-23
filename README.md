@@ -1,6 +1,8 @@
 # mgmtDapp
 A simple application allowing the management of organisations via the Ethereum Blockchain.
 
+Team: Norbert Schrattenecker; Clemens Stift;
+
 It should:
 - allow a user to sign up
 - allow a user to manage his account
