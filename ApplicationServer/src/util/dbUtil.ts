@@ -1,5 +1,9 @@
 import * as mongoose from 'mongoose';
 
+// TODO: Singleton statt einem const.
+// AppDependencyManager in App.ts?
+// this immer weitergeben?
+
 const DBService = {
     mongoOptions : {
         user: "root",
