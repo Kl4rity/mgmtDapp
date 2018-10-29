@@ -2,10 +2,11 @@
   "name": "mgmt",
   "version": "0.0.1",
   "description": "An application for registering employees and calling votes in a company",
-  "main": "app.js",
+  "main": "server.js",
   "scripts": {
-    "start": "tsc; DEBUG='app,app:*' nodemon ./dist/app.js",
-    "tsc": "tsc",
+    "start": "DEBUG='app,app:*' nodemon ./dist/server.js",
+    "dev": "npm run tsc & docker-compose up",
+    "tsc": "tsc -w",
     "test": "echo tests not implemented yet"
   },
   "repository": {
@@ -24,6 +25,7 @@
   },
   "homepage": "https://github.com/Kl4rity/mgmtDapp#readme",
   "dependencies": {
+    "@types/debug": "0.0.31",
     "@types/express": "^4.16.0",
     "@types/mongoose": "^5.2.19",
     "@types/node": "^10.12.0",
