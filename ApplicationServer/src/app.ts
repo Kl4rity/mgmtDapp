@@ -1,31 +1,41 @@
 import * as express from 'express';
 import * as morgan from 'morgan';
-import * as mongoose from 'mongoose';
+import * as debug from 'debug';
+
+import {Request, Response} from 'express';
 
 import User from './models/User';
-import Debug from 'debug';
 import DBService from './util/dbUtil';
 
-// debug is not running.
-const debug = new Debug("app");
+class App {
+    public express : express.Application;
+    private debug : debug.IDebugger;
 
-const app : express.Application = express();
-const port : any = process.env.PORT || 3000;
+    constructor(){
+        this.debug = debug("app");
 
-// Runs a Utility function that establishes the DB connection
-DBService.connect();
+        this.express = express();
+        this.mountLogger();
+        this.connectToDb();
+        this.mountRoutes();
+    }
 
-debug(process.env.port);
+    mountLogger(){
+        this.express.use(morgan('short'));
+    };
 
-app.use(morgan('short'));
+    connectToDb(){
+        // Runs a Utility function that establishes the DB connection
+        DBService.connect();
+    }
 
+    mountRoutes(){
+        this.express.use('/', (req : Request, res : Response) => {
+            User.find({}).then((value) => {
+                res.json(value);
+            });
+        });
+    };
+}
 
-app.use('/', (req, res) => {
-    User.find({}).then((value) => {
-        res.json(value);
-    });
-});
-
-app.listen(port);
-
-console.log(`Server started on port ${port}.`);
+export default App;
