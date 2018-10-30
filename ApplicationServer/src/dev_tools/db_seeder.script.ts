@@ -1,8 +1,8 @@
 import * as mongoose from 'mongoose';
 import User from '../models/User';
-import DBService from '../util/dbUtil';
+import DBConnector from '../util/dbUtil';
 
-DBService.connect();
+DBConnector.connect();
 
 for (let i = 0; i < 20; i++) {
     let userReference = new User();
