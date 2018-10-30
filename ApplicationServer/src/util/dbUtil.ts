@@ -4,7 +4,7 @@ import * as mongoose from 'mongoose';
 // AppDependencyManager in App.ts?
 // this immer weitergeben?
 
-const DBService = {
+const DBConnector = {
     mongoOptions : {
         user: "root",
         pass: "example",
@@ -13,8 +13,8 @@ const DBService = {
     },
     connect : () => {
         // Not pretty. How can I get this reference cleaner?
-        mongoose.connect(`mongodb://${DBService.mongoOptions.user}:${DBService.mongoOptions.pass}@${DBService.mongoOptions.container_name}:${DBService.mongoOptions.port}`);
+        mongoose.connect(`mongodb://${DBConnector.mongoOptions.user}:${DBConnector.mongoOptions.pass}@${DBConnector.mongoOptions.container_name}:${DBConnector.mongoOptions.port}`);
     }
 }
 
-export default DBService;
+export default DBConnector;
