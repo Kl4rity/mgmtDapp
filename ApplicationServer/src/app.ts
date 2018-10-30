@@ -25,11 +25,12 @@ class App {
     };
 
     connectToDb(){
-        // Runs a Utility function that establishes the DB connection
+        // Runs a Utility function that establishes the DB connection for the global mongoose object.
         DBService.connect();
     }
 
     mountRoutes(){
+        // Routers should be mounted here. This, so far, only mounts a single route for debugging purposes.
         this.express.use('/', (req : Request, res : Response) => {
             User.find({}).then((value) => {
                 res.json(value);

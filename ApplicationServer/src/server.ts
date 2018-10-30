@@ -19,12 +19,12 @@ class Server {
         this.app.listen(this.port);
 
         if(process.env.port != null){
-            debug("Port taken from Env.");
+            this.debug("Port Number sourced from Environment.");
         }
 
         console.log(`Server started on port ${this.port}.`);
     }
 }
 
-// Starting Server by creating an instance.
+// Creating a server instance.
 new Server();
