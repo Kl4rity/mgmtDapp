@@ -1,6 +1,6 @@
 import * as mongoose from 'mongoose';
 
-// TODO: Singleton statt einem const.
+// TODO: Singleton statt einem const?
 // AppDependencyManager in App.ts?
 // this immer weitergeben?
 
