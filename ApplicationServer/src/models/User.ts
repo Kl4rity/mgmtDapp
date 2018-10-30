@@ -1,22 +1,33 @@
-import * as mongoose from 'mongoose';
 import * as findOrCreate from 'mongoose-findorcreate';
+import {prop, Typegoose, ModelType, InstanceType, plugin} from 'typegoose';
 
-const userSchema : mongoose.Schema = new mongoose.Schema({
-  email: {type: String, required: true},
-  password: {type: String, required: true},
-  username: {type: String, required: false, default: null},
-  assigned: {type: Boolean, default: false},
-  address: {type: String, required:false},
-  // passwordResetToken: {type: String, required: false},
-  // passwordResetTokenExpirationDate: {type: Date, required: false}
-});
+@plugin(findOrCreate)
+class User extends Typegoose {
 
-userSchema.methods.name = function() {
-  return this.email;
-};
+  constructor(){
+    super();
+  }
 
-userSchema.plugin(findOrCreate);
+  @prop({required: true, unique: true})
+  email: String;
 
-const User : mongoose.Model<any> = mongoose.model("User", userSchema);
+  @prop({required: true})
+  password: String;
 
-export default User;
+  @prop()
+  username: String;
+
+  @prop()
+  assigned: Boolean;
+
+  @prop()
+  address: String;
+
+  // @prop()
+  // passwordResetToken: String;
+
+  // @prop()
+  // passwordResetTokenExpirationDate: Date;
+}
+
+export default new User().getModelForClass(User);
