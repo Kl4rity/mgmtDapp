@@ -7,6 +7,7 @@
     "start": "DEBUG='app,app:*' nodemon ./dist/server.js",
     "dev": "npm run tsc & docker-compose up",
     "tsc": "tsc -w",
+    "seed-db": "docker exec mgmtdapp_mongo_1 node ./dev_tools/db_seeder.script.js",
     "test": "echo tests not implemented yet"
   },
   "repository": {
@@ -38,6 +39,7 @@
     "morgan": "^1.9.1",
     "nodemon": "^1.18.4",
     "passport": "^0.4.0",
+    "typegoose": "^5.4.1",
     "typescript": "^3.1.3"
   }
 }
