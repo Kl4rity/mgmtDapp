@@ -5,7 +5,10 @@ import * as debug from 'debug';
 import {Request, Response} from 'express';
 
 import User from './models/User';
-import DBService from './util/dbUtil';
+import DBConnector from './util/dbUtil';
+import testRouter from './routers/test.router';
+
+// Importing Routers here:
 
 class App {
     public express : express.Application;
@@ -26,12 +29,14 @@ class App {
 
     connectToDb(){
         // Runs a Utility function that establishes the DB connection for the global mongoose object.
-        DBService.connect();
+        DBConnector.connect();
     }
 
     mountRoutes(){
         // Routers should be mounted here. This, so far, only mounts a single route for debugging purposes.
-        this.express.use('/', (req : Request, res : Response) => {
+        this.express.use('/test', testRouter);
+
+        this.express.get('/', (req : Request, res : Response) => {
             User.find({}).then((value) => {
                 res.json(value);
             });
