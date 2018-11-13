@@ -4,6 +4,7 @@ const express = require('express');
 const debug = require('debug')('app');
 const morgan = require('morgan');
 const passport = require('passport');
+const path = require('path');
 
 const DBConnector = require('./util/dbConnector');
 const secrets = require('./secrets/keys');
