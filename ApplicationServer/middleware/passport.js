@@ -12,17 +12,22 @@ module.exports = () => {
     clientID: credentials.passport.facebook.app_id,
     clientSecret: credentials.passport.facebook.app_secret,
     callbackURL: credentials.passport.facebook.callback,
-    profileFields: ['id', 'displayName', 'emails', 'third_party_id'],
+    profileFields:['id','displayName','emails'],
     // passReqToCallback : true,
     enableProof: true,
     session: true
   },
   function(accessToken, refreshToken, profile, done) {
+    debug("in Strategy function");
+    debug(profile);
     User.findOrCreate({email: profile.emails[0].value},
       function(err, user) {
         if (err) {
+          debug('Im in the booboo-zone');
+          debug(err);
           return done(err);
         } else {
+        debug('Got past the error.');
         done(null, user);
        }
     });
@@ -30,14 +35,14 @@ module.exports = () => {
 ));
 
   passport.serializeUser(function(user, done) {
-      done(null, user._id);
+      done(null, user);
   });
 
-  passport.deserializeUser(function(id, done) {
-    debug("Here I am.");
-
-      User.findById(id, function(err, user) {
+  passport.deserializeUser(function(user, done) {
+      User.findById(user.id, function(err, user) {
           done(err, user);
       });
   });
+
+  debug(passport); 
 }
