@@ -1,3 +1,6 @@
+#secrets
+/ApplicationServer/secrets/*
+
 # dependencies
 /ApplicationServer/node_modules
 /ApplicationServer/package-lock.json
