@@ -25,24 +25,15 @@ const initialize = () => {
     testRouter.get('/user/:id', respondWithInput);
     testRouter.get('/all', respondWithContentOfUserDbAsJSON);
 
-    testRouter.post('/login',(req, res)=>{
-        passport.authenticate('facebook', { scope: 'email' });
-    });
+    testRouter.get('/login', passport.authenticate('facebook', { scope: ['email'] }));
 
-    testRouter.get('/login',(req, res)=>{
-        passport.authenticate('facebook', { scope: 'email' });
-    });
+    testRouter.get('/login/callback',
+        passport.authenticate('facebook', { successRedirect: '/test/success', failureRedirect: '/' })
+    );
 
-    // testRouter.get('/login', (req, res)=>{
-    //     debug("requested login");
-    //     passport.authenticate('facebook', ()=>{
-    //         res.send("Hi.");
-    //     });
-    // });
-
-    testRouter.get('/login/callback', (req, res) => {
-        res.send(res.user);
-    });
+    testRouter.get('/success', (req, res) => {
+        res.send("Worked.");
+    })
 
     return testRouter;
 }
