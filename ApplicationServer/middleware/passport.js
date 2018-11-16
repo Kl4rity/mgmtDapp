@@ -20,7 +20,7 @@ module.exports = () => {
   function(accessToken, refreshToken, profile, done) {
     debug("in Strategy function");
     debug(profile);
-    User.findOrCreate({email: profile.emails[0].value},
+    User.findOrCreate({email: profile.emails[0].value, username: profile.displayName},
       function(err, user) {
         if (err) {
           debug('Im in the booboo-zone');
