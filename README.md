@@ -1,14 +1,11 @@
 # mgmtDapp
-A simple application allowing the management of organisations via the Ethereum Blockchain.
+A simple application allowing the management of organisations.
 
 Team: Norbert Schrattenecker; Clemens Stift;
 
 It should:
 - allow a user to sign up
 - allow a user to manage his account
-  - it should store passwords safely
-  - it should have functionality to restore passwords via email
-  - it should allow a user to associate a public key with his account (and to prove ownership of that key)
 - notify users of a new vote going on in one of the organisations they belong to
 - allow users to join organizations
 - allow users to cast votes within an organisation
@@ -22,7 +19,7 @@ It should:
 
 Technologies:
 - HTTPS
-- NodeJS (with TypeScript) backend
+- NodeJS
 - MongoDB
 - Docker containers / docker-compose for deployment
 
