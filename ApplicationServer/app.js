@@ -27,8 +27,7 @@ const mountMiddlewares = () => {
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(cookieParser());
-    // app.use(bodyParser.urlencoded({extended: false}));
-    app.use(session({ secret: secrets.sessionKey, resave: true, saveUninitialized: true }));
+    app.use(session({ secret: secrets.sessionKey }));
 };
 
 const initializePassport = () => {

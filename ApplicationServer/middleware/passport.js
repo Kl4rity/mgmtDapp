@@ -19,15 +19,12 @@ module.exports = () => {
   },
   function(accessToken, refreshToken, profile, done) {
     debug("in Strategy function");
-    debug(profile);
     User.findOrCreate({email: profile.emails[0].value, username: profile.displayName},
       function(err, user) {
         if (err) {
-          debug('Im in the booboo-zone');
           debug(err);
           return done(err);
         } else {
-        debug('Got past the error.');
         done(null, user);
        }
     });
@@ -35,11 +32,11 @@ module.exports = () => {
 ));
 
   passport.serializeUser(function(user, done) {
-      done(null, user);
+      done(null, user.id);
   });
 
-  passport.deserializeUser(function(user, done) {
-      User.findById(user.id, function(err, user) {
+  passport.deserializeUser(function(id, done) {
+      User.findById(id, function(err, user) {
           done(err, user);
       });
   });
