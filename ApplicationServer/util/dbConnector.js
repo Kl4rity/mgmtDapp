@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
 
 const mongoOptions = {
     user: "root",
@@ -7,7 +9,16 @@ const mongoOptions = {
     port: "27017"
 }
 
-module.exports = () => {
+const connectionString = `mongodb://${mongoOptions.user}:${mongoOptions.pass}@${mongoOptions.container_name}:${mongoOptions.port}`;
+
+module.exports = {
+    establishDbConnection : () => {
+        console.log(connectionString);
         // Not pretty. How can I get this reference cleaner?
-        mongoose.connect(`mongodb://${mongoOptions.user}:${mongoOptions.pass}@${mongoOptions.container_name}:${mongoOptions.port}`);
+        mongoose.connect(connectionString);
+    },
+    getSessionStore : () => {
+        store = new MongoStore({mongooseConnection: mongoose.connection});
+        return store;
     }
+}

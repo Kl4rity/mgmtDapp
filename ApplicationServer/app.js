@@ -27,7 +27,12 @@ const mountMiddlewares = () => {
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(cookieParser());
-    app.use(session({ secret: secrets.sessionKey }));
+    app.use(session({ 
+        secret: secrets.sessionKey,
+        store: DBConnector.getSessionStore(),
+        resave: true,
+        saveUninitialized: true
+     }));
 };
 
 const initializePassport = () => {
@@ -39,13 +44,16 @@ const initializePassport = () => {
 const mountRouters = () => {
     // Routers should be mounted here. This, so far, only mounts a single route for debugging purposes.
     app.use('/test', require('./routes/test.routes').initialize());
+    app.use('/organisation', require('./routes/organisation.routes').initialize());
+    app.use('/', require('./routes/user.routes').initialize())
 };
 
 const initializeSecureApplication = () => {
     setCORSHeader();
+    DBConnector.establishDbConnection();
     mountMiddlewares();
 
-    DBConnector();
+    require('./models/initializeSchemas')();
 
     initializePassport();
     mountRouters();
