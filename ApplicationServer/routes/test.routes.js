@@ -1,13 +1,18 @@
 const debug = require('debug')("app:test.routes.ts");
 const passport = require('passport');
-const User = require('../models/User').User;
+const User = require('../models/User');
 const seedDb = require('../dev_tools/db_seeder.script');
 const express = require('express');
 
 const testRouter = express.Router();
 
 const respondWithInput = (req, res) => {
-    res.send(req.params);
+    let responseObject = {
+        params: req.params,
+        session: req.session,
+        user: req.user
+    }
+    res.send(responseObject);
 }
 
 const respondWithContentOfUserDbAsJSON = (req, res) => {
@@ -32,7 +37,7 @@ const initialize = () => {
     );
 
     testRouter.get('/success', (req, res) => {
-        res.send("Worked.");
+        res.send("Seems to have worked.");
     })
 
     return testRouter;
