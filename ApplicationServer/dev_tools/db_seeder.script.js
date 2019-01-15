@@ -1,7 +1,8 @@
-const User = require('../models/User').User;
+const mongoose = require('mongoose')
+const User = mongoose.model('User');
 
 // Connect to DB.
-require('../util/dbConnector')();
+require('../util/dbConnector').establishDbConnection();
 
 const seedDb = () => {
     for (let i = 0; i < 20; i++) {
@@ -20,7 +21,8 @@ module.exports.seedDb = seedDb;
 
 // If it is run as a script, execute the function here:
 (async function checkIfDbIsSeeded(){
-    let users = await User.find();
+    require('../util/dbConnector').establishDbConnection();
+    let users = await require('../models/User').User.find();
     if (users.length < 1){
         seedDb();
     }
