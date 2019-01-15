@@ -1,13 +1,15 @@
 const mongoose = require('mongoose');
-const findOrCreate = require('mongoose-findorcreate');
+// const findOrCreate = require('mongoose-findorcreate');
 
 const organisationSchema = mongoose.Schema({
-  name: {type: String, required: true, unique: true},
-  members: {type: Map, of: String, required: true}
+  name: {type: String, required: true},
+  members: [{
+            userId: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
+            role: {type: String}
+        }],
+  votes: {type: [mongoose.Schema.Types.ObjectId], required: false, ref: 'Vote'}
 });
 
-organisationSchema.plugin(findOrCreate);
+// organisationSchema.plugin(findOrCreate);
 
-const Organisation = mongoose.model("Organisation", organisationSchema);
-
-module.exports = Organisation;
+module.exports = mongoose.model("Organisation", organisationSchema);

@@ -1,15 +1,20 @@
 const mongoose = require('mongoose');
-const findOrCreate = require('mongoose-findorcreate');
+// const findOrCreate = require('mongoose-findorcreate');
 
 const voteSchema = mongoose.Schema({
-  name: {type: String, required: true, unique: true},
+  name: {type: String, required: true, unique: false},
+  description: {type: String, required: false, unique: false},
   endDate: {type: Date, required: true},
-  voters: {type: [mongoose.Schema.Types.ObjectId], required: true, ref: 'User'},
-  votes: {type: Map, of: String}
+  votes: [{
+    voter : {type: mongoose.Schema.Types.ObjectId, required: true, ref: 'User'},
+    vote : {type: Boolean, required: false}
+    }],
+    ended: {type: Boolean, required: true, default: false},
+    created: {type: Date, required: true, default: Date.now()}
 });
 
-voteSchema.plugin(findOrCreate);
+voteSchema.set('autoIndex', true);
 
-const Vote = mongoose.model("Organisation", voteSchema);
+// voteSchema.plugin(findOrCreate);
 
-module.exports = Vote;
+module.exports = mongoose.model("Vote", voteSchema);;
