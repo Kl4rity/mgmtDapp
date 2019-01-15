@@ -43,8 +43,9 @@ const initializePassport = () => {
 
 const mountRouters = () => {
     // Routers should be mounted here. This, so far, only mounts a single route for debugging purposes.
-    app.use('/test', require('./routes/test.routes').initialize());
+    app.use('/account', require('./routes/account.routes').initialize());
     app.use('/organisation', require('./routes/organisation.routes').initialize());
+    app.use('/vote', require('./routes/vote.routes').initialize());
     app.use('/', require('./routes/user.routes').initialize())
 };
 
