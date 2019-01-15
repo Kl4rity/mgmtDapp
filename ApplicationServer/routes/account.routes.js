@@ -22,7 +22,6 @@ const initialize = () => {
         passport.authenticate('facebook', { successRedirect: '/', failureRedirect: '/login/failed' })
     );
     accountRouter.get('/login/failed', loginFailure)
-    
 
     return accountRouter;
 }
