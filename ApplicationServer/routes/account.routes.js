@@ -19,7 +19,7 @@ const initialize = () => {
     accountRouter.get('/logout', logUserOut);
     accountRouter.get('/login', passport.authenticate('facebook', { scope: ['email'] }));
     accountRouter.get('/login/callback',
-        passport.authenticate('facebook', { successRedirect: '/', failureRedirect: '/login/failed' })
+        passport.authenticate('facebook', { successRedirect: 'http://localhost:3002', failureRedirect: '/login/failed' })
     );
     accountRouter.get('/login/failed', loginFailure)
 
