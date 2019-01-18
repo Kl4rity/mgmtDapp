@@ -16,8 +16,9 @@ const app = express();
 // Configure secure application
 const setCORSHeader = () => {
     app.use(function (req, res, next) {
-        res.header("Access-Control-Allow-Origin", "*");
+        res.header("Access-Control-Allow-Origin", "http://localhost:3002");
         res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+        res.header("Access-Control-Allow-Credentials", "true");
         next();
     });
 }
@@ -92,8 +93,8 @@ const startSecureServer = () => {
         https.createServer(TLSoptions, app).listen(3001);
         console.log(`HTTPS server started on port ${port}.`);
     } catch (err) {
-        console.log(`Server could not be started.`);
         console.log(err);
+        console.log(`Server could not be started.`);
     }
 }
 
