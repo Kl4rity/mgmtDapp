@@ -14,20 +14,11 @@ const sendUserData = (req, res) => {
     if(!!req.user){
         // Fetch all the data for a user.
         (async function getOrganisationsForUser(){
-            let usersOrganisations = await Organisation.find({'members.userId': req.user.id}).exec();
-            let voteIds = [];
-            usersOrganisations.forEach((organisation)=>{
-                voteIds.push(...organisation.votes);
-            });
-            // Find votes for organisations instead - even if the user is not part of it.
-            userVotes = await Vote.find({
-                '_id' : {$in: voteIds.map(id => mongoose.Types.ObjectId(id))}
-            }).exec();
+            let organisations = await Organisation.find({'members.user': req.user.id}).populate('members.user').populate('votes').exec();
     
             let responseObject = {
                 user : req.user,
-                usersOrganisations,
-                userVotes
+                organisations
             }
     
             res.send(responseObject);
