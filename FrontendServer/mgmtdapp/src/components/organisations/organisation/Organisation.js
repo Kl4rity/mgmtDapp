@@ -1,26 +1,43 @@
 import React, { Component } from 'react'
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import Votes from '../../votes/Votes';
+import {connect} from 'react-redux';
 
+import Votes from '../../votes/Votes';
 import Page404 from '../../common/404';
 import Members from '../../members/Members';
 
 export class Organisation extends Component {
+
+  constructor({match}){
+    super();
+    this.match = match;
+    this.id = match.params.id;
+    this.displayOrganisation = this.displayOrganisation.bind(this);
+  }
+
+  displayOrganisation(){
+    let id = this.match.params.id;
+    let organisation = this.props.organisations.filter((organisation)=>{return organisation.id == id})[0];
+    if(organisation){
+      return <p>{organisation.name}</p>
+    } else {
+      return <p>No organisation to display</p>
+    }
+  }
+
   render() {
     return (
       <div>
-        This is an organisation.
-        <BrowserRouter basename="/organisation/">
-          <Switch>
-            <Route path="/votes" component={Votes}/>
-            <Route path="/members" component={Members}/>
-            <Route path="" exact/>
-            <Route component = {Page404}/>
-          </Switch>
-        </BrowserRouter>
+        {this.displayOrganisation()}
       </div>
     )
   }
 }
 
-export default Organisation
+function mapStateToProps(state, ownProps){
+  return {
+    organisations : state.organisations
+  }
+}
+
+export default connect(mapStateToProps)(Organisation);
