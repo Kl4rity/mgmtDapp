@@ -11,7 +11,7 @@ const dataBaseService = {
 
                 organisationReference.name = nameOfOrganisation;
                 let newOrganisationMember = {
-                    userId: callingUser.id,
+                    user: callingUser.id,
                     role: 'admin'
                 }
                 organisationReference.members.push(newOrganisationMember);
@@ -81,7 +81,7 @@ const dataBaseService = {
 
                 targetOrganisation.members.forEach((member)=>{
                     votes.push({
-                        voter: member.userId
+                        voter: member.user
                     });
                 });
 
@@ -149,7 +149,7 @@ const dataBaseService = {
                     }
                     return vote.voter == userId;
                 });
-                // userVote.voter = mongoose.Types.ObjectId(userVote.voter);
+                userVote.voter = mongoose.Types.ObjectId(userVote.voter);
                 userVote.vote = vote;
                 voteReference.votes[userVoteIndex] = userVote;
                 try {

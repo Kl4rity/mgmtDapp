@@ -7,7 +7,7 @@ const permissionService = {
         return (async function checkUserPermission(){
             let requestedOrganisation = await Organisation.findById(organisationId).exec();
             let userMembership = requestedOrganisation.members.filter((member)=>{
-                return member.userId == callingUser.id;
+                return member.user == callingUser.id;
             })[0];
 
             let roleObject = userRoles.filter((role)=>{
