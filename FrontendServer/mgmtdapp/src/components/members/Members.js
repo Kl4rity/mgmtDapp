@@ -19,7 +19,7 @@ class Members extends Component {
     let memberList = null;
     if(!!members && members.length > 0){
       memberList = members.map((member, index)=>{
-        return <li key={index}>{member.id}</li>
+        return <li key={index}>{member.username}</li>
       });
     } else {
       return <li>No members to display.</li>
@@ -29,7 +29,7 @@ class Members extends Component {
 
   filterMembers(id){
     let organisationMembers = null;
-    if(!!this.props.organisations & this.props.organisations.length > 0){
+    if(!!this.props.organisations && this.props.organisations.length > 0){
       let currentOrganisation = this.props.organisations.filter(organisation => organisation.id == id)[0];
       organisationMembers = currentOrganisation.members;
     }

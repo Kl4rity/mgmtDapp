@@ -17,7 +17,7 @@ class Votes extends Component {
   displayVotesForId(id){
     let votes = this.filterVotes(id);
     let voteList = null;
-    if(votes.length > 0){
+    if(!!votes && votes.length > 0){
       voteList = votes.map((vote, index)=>{
          return <li key={index}>{vote.name}</li>
       });
@@ -29,9 +29,9 @@ class Votes extends Component {
 
   filterVotes(id){
     let organisationVotes = null;
-    if(!!this.props.organisations & !!this.props.votes){
+    if(!!this.props.organisations && this.props.organisations.length > 0){
       let currentOrganisation = this.props.organisations.filter(organisation => organisation.id == id)[0];
-      organisationVotes = this.props.votes.filter(vote => currentOrganisation.voteIds.indexOf(vote.id) >= 0);
+      organisationVotes = currentOrganisation.votes;
     }
     return organisationVotes;
   }
@@ -48,10 +48,10 @@ class Votes extends Component {
 }
 
 function mapStateToProps(state, ownProps){
+  console.log(state);
   return {
-    organisations : state.organisations,
-    votes : state.votes
-  }
+    organisations : state.organisations
+    }
 }
 
 export default connect(mapStateToProps)(Votes);

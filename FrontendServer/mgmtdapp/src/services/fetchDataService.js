@@ -1,5 +1,4 @@
 import {createOrganisations} from '../actions/organisationActions';
-import {createVotes} from '../actions/voteActions';
 import {readUserData} from '../actions/userActions';
 
 const fetchDataServiceSingleton = {
@@ -36,6 +35,7 @@ class FetchDataService {
         return this.parseDataIntoReduxStore(this.convertJsonToDataStructure(await response.json()));
     }
     convertJsonToDataStructure(responseJSON){
+        console.log(responseJSON);
         let appData = {};
         appData.user = {
             username : responseJSON.user.username,
@@ -44,39 +44,47 @@ class FetchDataService {
         }
 
         appData.organisations = [];
-        responseJSON.usersOrganisations.forEach((responseOrganisation)=>{
-            let organisation = {};
-            organisation.members = [];
-            responseOrganisation.members.forEach((member)=>{
-                let newMemberObject = {};
-                newMemberObject.role = member.role;
-                newMemberObject.id = member.userId;
-                organisation.members.push(newMemberObject);
-            });
-            organisation.voteIds = [];
-            organisation.voteIds = responseOrganisation.votes;
-            organisation.id = responseOrganisation._id;
-            organisation.name = responseOrganisation.name;
-            appData.organisations.push(organisation);
-        });
+        if(responseJSON.organisations){
+            responseJSON.organisations.forEach((responseOrganisation)=>{
+                let organisation = {};
 
-        appData.votes = [];
-        responseJSON.userVotes.forEach((responseVote)=>{
-            let vote = {};
-            vote.name = responseVote.name;
-            let voteDescription = (responseVote.description) ?  responseVote.description : null;
-            vote.description = voteDescription;
-            vote.created = responseVote.created;
-            vote.ends = responseVote.endDate;
-            vote.ended = responseVote.ended;
-            vote.id = responseVote._id;
-            appData.votes.push(vote);
-        });
+                organisation.members = [];
+                responseOrganisation.members.forEach((member)=>{
+                    let newMemberObject = {};
+                    newMemberObject.role = member.role;
+                    newMemberObject.id = member.user._id;
+                    newMemberObject.username = member.user.username;
+                    newMemberObject.email = member.user.email;
+                    organisation.members.push(newMemberObject);
+                });
+
+                organisation.votes = [];
+                responseOrganisation.votes.forEach((vote)=>{
+                    let newVoteObject = {};
+                    newVoteObject.creationDate = vote.created;
+                    newVoteObject.endDate = vote.endDate;
+                    newVoteObject.name = vote.name;
+                    newVoteObject.hasEnded = vote.ended;
+                    let newVoteDescription = (vote.description) ? vote.desccription : null;
+                    newVoteObject.description = newVoteDescription;
+                    newVoteObject.votes = [];
+                    newVoteObject.votes.forEach((individualVote)=>{
+                        let newIndividualVote = {};
+                        newIndividualVote.response = individualVote.vote;
+                        newIndividualVote.voter = responseOrganisation.members.filter((member)=>{return member.id == individualVote.voter})[0];
+                    });
+                    organisation.votes.push(newVoteObject);
+                });
+
+                organisation.id = responseOrganisation._id;
+                organisation.name = responseOrganisation.name;
+                appData.organisations.push(organisation);
+            });
+        }
         return appData;
     }
     parseDataIntoReduxStore(appData){
         this.store.dispatch(createOrganisations(appData.organisations));
-        this.store.dispatch(createVotes(appData.votes));
         this.store.dispatch(readUserData(appData.user));
     }
 }
