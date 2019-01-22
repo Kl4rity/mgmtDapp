@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import VoteCard from './VoteCard/VoteCard';
+
+import {Col} from 'react-materialize';
+import AddVoteModal from './AddVoteModal/AddVoteModal';
 
 class Votes extends Component {
 
@@ -19,7 +23,7 @@ class Votes extends Component {
     let voteList = null;
     if(!!votes && votes.length > 0){
       voteList = votes.map((vote, index)=>{
-         return <li key={index}>{vote.name}</li>
+         return <VoteCard vote={vote} key={index}/>
       });
     } else {
       voteList = <li>No votes to display</li>
@@ -30,7 +34,9 @@ class Votes extends Component {
   filterVotes(id){
     let organisationVotes = null;
     if(!!this.props.organisations && this.props.organisations.length > 0){
+      console.log(this.props.organisations);
       let currentOrganisation = this.props.organisations.filter(organisation => organisation.id == id)[0];
+      console.log(currentOrganisation);
       organisationVotes = currentOrganisation.votes;
     }
     return organisationVotes;
@@ -38,17 +44,15 @@ class Votes extends Component {
 
   render() {
     return (
-      <div>
-        <ul>
+      <Col l={12} m={12} s={12}>
           {this.displayVotesForId(this.match.params.id)}
-        </ul>
-      </div>
+          <AddVoteModal></AddVoteModal>
+      </Col>
     )
   }
 }
 
 function mapStateToProps(state, ownProps){
-  console.log(state);
   return {
     organisations : state.organisations
     }
