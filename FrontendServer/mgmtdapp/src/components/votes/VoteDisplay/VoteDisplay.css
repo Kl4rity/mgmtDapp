@@ -1,0 +1,20 @@
+.chip{
+    margin-left: 5px;
+}
+
+.chip img {
+    margin: 4px 4px 0 0;
+    border-radius: 0;
+    height: 24px;
+    width: 24px;
+}
+
+.row {
+    margin-top: 20px;
+    margin-bottom: 0px;
+}
+
+.vote-display-separator {
+    margin-left: 8px;
+    margin-right: 8px;
+}
