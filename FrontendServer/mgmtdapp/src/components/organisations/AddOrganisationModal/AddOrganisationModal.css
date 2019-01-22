@@ -1,0 +1,8 @@
+.mgmt-dapp-add-organisation-modal{
+    margin: 0 5%;
+    width: 90%;
+}
+
+.modal-footer {
+    display: none;
+}
