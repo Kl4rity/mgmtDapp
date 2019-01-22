@@ -1,7 +1,7 @@
-export default function roleReducer(state = {}, action){
+export default function roleReducer(state = [], action){
     switch(action.type){
         case 'READ_ROLE_DATA':
-            return Object.assign({}, state, action.roles);
+            return [...action.roles];
         default:
             return state;
     }
