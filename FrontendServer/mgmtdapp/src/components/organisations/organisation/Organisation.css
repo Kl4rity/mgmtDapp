@@ -1,0 +1,11 @@
+.display-switch-active {
+    font-weight: bold;
+}
+
+.display-switch-separator {
+    margin-top: 3px;
+}
+
+.pagination {
+    margin:0;
+}
