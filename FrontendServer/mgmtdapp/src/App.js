@@ -6,6 +6,7 @@ import configureStore from './store/configureStore';
 import {Provider} from 'react-redux';
 
 import fetchDataServiceSingleton from './services/fetchDataService';
+import postDataServiceSingleton from './services/postService';
 
 
 class App extends Component {
@@ -14,6 +15,7 @@ class App extends Component {
     super();
     this.store = configureStore();
     let dataServiceSingleton = fetchDataServiceSingleton.getFetchDataService(this.store);
+    let postDataSingleton = postDataServiceSingleton.getPostServiceInstance(this.store);
   }
   render() {
     return (
