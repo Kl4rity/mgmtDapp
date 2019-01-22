@@ -3,7 +3,7 @@ export default function organisationReducer(state = [], action){
         case 'CREATE_ORGANISATION':
             return [...state, action.organisation];
         case 'CREATE_ORGANISATIONS':
-            return [...state, ...action.organisations];
+            return [...action.organisations];
         default:
             return state;
     }
