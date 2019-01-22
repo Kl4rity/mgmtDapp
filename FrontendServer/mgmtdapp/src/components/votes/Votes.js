@@ -4,6 +4,7 @@ import VoteCard from './VoteCard/VoteCard';
 
 import {Col} from 'react-materialize';
 import AddVoteModal from './AddVoteModal/AddVoteModal';
+import roleUtils from '../utils/roleUtils';
 
 class Votes extends Component {
 
@@ -31,22 +32,44 @@ class Votes extends Component {
     return voteList;
   }
 
+  filterMembers(id) {
+    let organisationMembers = null;
+    if (!!this.props.organisations && this.props.organisations.length > 0) {
+      let currentOrganisation = this.props.organisations.filter(organisation => organisation.id == id)[0];
+      organisationMembers = currentOrganisation.members;
+    }
+    return organisationMembers;
+  }
+
   filterVotes(id){
     let organisationVotes = null;
     if(!!this.props.organisations && this.props.organisations.length > 0){
-      console.log(this.props.organisations);
       let currentOrganisation = this.props.organisations.filter(organisation => organisation.id == id)[0];
-      console.log(currentOrganisation);
       organisationVotes = currentOrganisation.votes;
     }
     return organisationVotes;
   }
 
+  memberCanCreateNewVote(user, memberList, rolesList){
+    let canCreateVote = false;
+    let userRole = roleUtils.getRoleForUserInOrganisation(user, memberList, rolesList);
+    if(!!userRole){
+      canCreateVote = userRole.permissions.vote.create;
+    }
+    return canCreateVote;
+  }
+
   render() {
+
+    let addButton = null;
+    if (this.memberCanCreateNewVote(this.props.user, this.filterMembers(this.match.params.id), this.props.roles)) {
+      addButton = <AddVoteModal></AddVoteModal>;
+    }
+
     return (
       <Col l={12} m={12} s={12}>
           {this.displayVotesForId(this.match.params.id)}
-          <AddVoteModal></AddVoteModal>
+          {addButton}
       </Col>
     )
   }
@@ -54,7 +77,9 @@ class Votes extends Component {
 
 function mapStateToProps(state, ownProps){
   return {
-    organisations : state.organisations
+    organisations : state.organisations,
+    user : state.user,
+    roles : state.roles
     }
 }
 
