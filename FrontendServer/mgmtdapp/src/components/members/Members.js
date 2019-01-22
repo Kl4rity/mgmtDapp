@@ -1,5 +1,8 @@
 import React, { Component } from 'react'
+import MemberCard from './memberCard/memberCard';
 import { connect } from 'react-redux';
+import { Col } from 'react-materialize';
+import AddMemberModal from './AddMemberModal/AddMemberModal';
 
 class Members extends Component {
 
@@ -19,7 +22,7 @@ class Members extends Component {
     let memberList = null;
     if(!!members && members.length > 0){
       memberList = members.map((member, index)=>{
-        return <li key={index}>{member.username}</li>
+        return <MemberCard key={index} member={member}/>
       });
     } else {
       return <li>No members to display.</li>
@@ -38,11 +41,10 @@ class Members extends Component {
 
   render() {
     return (
-      <div>
-        <ul>
+      <Col s={12} m={12} l={12}>
           {this.displayMembersForId(this.match.params.id)}
-        </ul>
-      </div>
+          <AddMemberModal></AddMemberModal>
+      </Col>
     )
   }
 }

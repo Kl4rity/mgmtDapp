@@ -1,27 +1,34 @@
 import React, { Component } from 'react';
 import { PropTypes } from 'prop-types';
 import {connect} from 'react-redux';
-import {Link} from 'react-router-dom';
+import {NavLink} from 'react-router-dom';
+import {SideNav, SideNavItem, Button} from 'react-materialize';
+import './Organisations.css';
+
+import AuthenticationButtons from '../common/AuthenticationButtons'
+import AddOrganisationModal from './AddOrganisationModal/AddOrganisationModal';
+
 
 class Organisations extends Component {
 
   organisationRow(organisation, index){
-    return <li key = {index}> <Link to={"/organisation/"+ organisation.id + "/votes/"}>{organisation.name} </Link></li>;
+    return <SideNavItem key = {index}> <NavLink activeClassName='mgmt-dapp-organisation-active' className="no-padding" to={"/organisation/"+ organisation.id + "/votes/"}>{organisation.name} </NavLink></SideNavItem>;
   }
   render() {
     let organisations;
     if (this.props.organisations){
       organisations = this.props.organisations.map(this.organisationRow);
     } else {
-      organisations = <li>No organisations.</li>;
+      organisations = <SideNavItem>No organisations yet. Create one!</SideNavItem>;
     }
 
     return (
-      <div>
-        <ul>
+      <SideNav fixed id="nav-mobile">
+          <SideNavItem subheader>Organisations</SideNavItem>
           {organisations}
-        </ul>
-      </div>
+          <AddOrganisationModal/>
+          <AuthenticationButtons></AuthenticationButtons>
+      </SideNav>
     )
   }
 }
