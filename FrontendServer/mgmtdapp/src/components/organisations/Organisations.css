@@ -1,0 +1,11 @@
+.no-padding{
+    padding: 0;
+}
+.side-nav {
+    width: 25%;
+    min-width: 300px;
+}
+
+.mgmt-dapp-organisation-active{
+    font-weight: bold;
+}
