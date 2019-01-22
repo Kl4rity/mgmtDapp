@@ -1,11 +1,8 @@
 const mongoose = require('mongoose');
-const debug = require('debug')("app:test.routes.ts");
-const passport = require('passport');
-const User = mongoose.model('User');
 const Organisation = mongoose.model('Organisation');
-const Vote = mongoose.model('Vote');
 const express = require('express');
 const insufficientPermissions = require('../util/insufficientPermissions');
+const roles = require('../models/Roles/roles');
 
 const userRouter = express.Router();
 
@@ -18,7 +15,8 @@ const sendUserData = (req, res) => {
     
             let responseObject = {
                 user : req.user,
-                organisations
+                organisations,
+                roles
             }
     
             res.send(responseObject);
@@ -27,7 +25,6 @@ const sendUserData = (req, res) => {
         insufficientPermissions(req, res);
     }
 }
-
 // If no User is logged in - send him to the login page.
 
 const initialize = () => {
