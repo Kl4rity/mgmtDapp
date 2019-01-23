@@ -1,6 +1,15 @@
 .no-padding{
     padding: 0;
 }
+
+.no-padding:first-of-type div {
+    display: inline;
+}
+
+.side-nav .no-padding:hover{
+    background-color: rgba(0,0,0,0.00);
+}
+
 .side-nav {
     width: 25%;
     min-width: 300px;
@@ -8,4 +17,10 @@
 
 .mgmt-dapp-organisation-active{
     font-weight: bold;
+}
+
+.mgmt-organisations-navitem-align-right{
+    right: 5%;
+    position: absolute;
+    display: inline;
 }
