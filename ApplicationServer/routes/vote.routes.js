@@ -53,8 +53,8 @@ const closeVote = (req, res) => {
 const removeVote = (req, res) => {
     (async function removeVote(){
         try {
-            let voteId = req.query.idOfVote;
-            let organisationId = req.query.organisationId;
+            let voteId = req.body.idOfVote;
+            let organisationId = req.body.organisationId;
 
             let hasPermission = await permissionService.field.vote.remove(organisationId, req.user);
 
@@ -81,7 +81,7 @@ const changeDeadline = (req, res) => {
             let hasPermission = await permissionService.field.vote.changeEndDate(organisationId, req.user);
 
             if(!!req.user & hasPermission){
-                databaseService.vote.changeEndDate(voteId, newEndDate);
+                databaseService.vote.changeEndDate(voteId, voteNewEndDate);
                 successResponse(req, res);
             } else {
                 insufficientPermissions(req, res);
@@ -120,7 +120,7 @@ const castVote = (req, res) => {
 const initialize = () => {
     voteRouter.post('/create', createVote);
     voteRouter.get('/close', closeVote);
-    voteRouter.get('/remove', removeVote);
+    voteRouter.post('/remove', removeVote);
     voteRouter.get('/changeDeadline', changeDeadline);
     voteRouter.get('/cast', castVote);
 
