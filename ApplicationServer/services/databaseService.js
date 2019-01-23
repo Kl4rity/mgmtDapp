@@ -6,7 +6,7 @@ const Vote = mongoose.model('Vote');
 const dataBaseService = {
     organisation: {
         create: (callingUser, nameOfOrganisation) => {
-            return (async function createOrganisation(){
+            return (async function createOrganisation() {
                 let organisationReference = new Organisation();
 
                 organisationReference.name = nameOfOrganisation;
@@ -34,7 +34,7 @@ const dataBaseService = {
                 try {
                     organisationReference.save();
                     return true;
-                } catch (err){
+                } catch (err) {
                     console.log(err);
                     return false;
                 }
@@ -48,19 +48,19 @@ const dataBaseService = {
                 try {
                     organisationReference.save();
                     return true;
-                } catch (err){
+                } catch (err) {
                     console.log(err);
                     return false;
                 }
             }())
-        }, close : (organisationId) => {
-            return (async function executeCloseOrganisation(){
+        }, close: (organisationId) => {
+            return (async function executeCloseOrganisation() {
                 let organisationReference = await Organisation.findById(organisationId).exec();
-                
+
                 try {
                     organisationReference.remove();
                     return true;
-                } catch (err){
+                } catch (err) {
                     console.log(err);
                     return false;
                 }
@@ -69,8 +69,8 @@ const dataBaseService = {
 
     }
     , vote: {
-        create : (organisationId, nameOfVote, description, endDateUnix) => {
-            return (async function createVote(){
+        create: (organisationId, nameOfVote, description, endDateUnix) => {
+            return (async function createVote() {
                 let voteReference = new Vote();
 
                 let targetOrganisation = await Organisation.findById(organisationId).exec();
@@ -80,7 +80,7 @@ const dataBaseService = {
                 voteReference.endDate = endDateUnix;
                 let votes = [];
 
-                targetOrganisation.members.forEach((member)=>{
+                targetOrganisation.members.forEach((member) => {
                     votes.push({
                         voter: member.user
                     });
@@ -89,19 +89,19 @@ const dataBaseService = {
                 voteReference.votes = votes;
 
                 try {
-                    voteReference.save().then((vote)=>{
+                    voteReference.save().then((vote) => {
                         targetOrganisation.votes.push(vote._id);
                         targetOrganisation.save();
                         return true;
                     });
-                } catch(err) {
+                } catch (err) {
                     console.log(err)
                     return false;
                 }
             }())
         },
-        close : (idOfVote) => {
-            return (async function closeVote(){
+        close: (idOfVote) => {
+            return (async function closeVote() {
                 let voteReference = await Vote.findById(idOfVote).exec();
 
                 voteReference.ended = true;
@@ -109,43 +109,43 @@ const dataBaseService = {
                 try {
                     voteReference.save();
                     return true;
-                } catch(err) {
+                } catch (err) {
                     console.log(err)
                     return false;
                 }
             }())
         },
-        remove : (idOfVote) => {
-            return (async function removeVote(){
+        remove: (idOfVote) => {
+            return (async function removeVote() {
                 // Make these requests paralell with promises?
                 let voteReference = await Vote.findById(idOfVote).exec();
 
                 let organisationsWithVote = await Organisation.find({
-                    'votes' : [idOfVote]
+                    'votes': [idOfVote]
                 }).exec();
 
                 let organisationReference = organisationsWithVote[0];
 
                 try {
-                    voteReference.remove().then(()=>{
-                        organisationReference.votes = organisationReference.votes.filter((vote)=>{
+                    voteReference.remove().then(() => {
+                        organisationReference.votes = organisationReference.votes.filter((vote) => {
                             return vote.id != idOfVote;
                         });
                         organisationReference.save();
                     });
                     return true;
-                } catch(err) {
+                } catch (err) {
                     console.log(err)
                     return false;
                 }
             }())
         },
-        cast : (idOfVote, userId, vote) => {
-            return (async function castVote(){
+        cast: (idOfVote, userId, vote) => {
+            return (async function castVote() {
                 let voteReference = await Vote.findById(idOfVote).exec();
                 let userVoteIndex;
-                let userVote = voteReference.votes.filter((vote, index)=>{
-                    if(vote.voter == userId){
+                let userVote = voteReference.votes.filter((vote, index) => {
+                    if (vote.voter == userId) {
                         userVoteIndex = index;
                     }
                     return vote.voter == userId;
@@ -156,17 +156,17 @@ const dataBaseService = {
                 try {
                     voteReference.save();
                     return true;
-                } catch(err) {
+                } catch (err) {
                     console.log(err)
                     return false;
                 }
             }())
         },
-        changeEndDate : (idOfVote, newEndDate) => {
-            return (async function moveVoteEndDate(){
+        changeEndDate: (idOfVote, newEndDate) => {
+            return (async function moveVoteEndDate() {
                 let voteReference = await Vote.findById(idOfVote).exec();
-                
-                if(Date.now() < newEndDate){
+
+                if (Date.now() < newEndDate) {
                     voteReference.endDate = newEndDate;
                 } else {
                     return false;
@@ -175,7 +175,7 @@ const dataBaseService = {
                 try {
                     voteReference.save();
                     return true;
-                } catch(err) {
+                } catch (err) {
                     console.log(err)
                     return false;
                 }
@@ -183,18 +183,30 @@ const dataBaseService = {
 
         }
     }
-    , member : {
-        changeRole(idOfMember, newRole){
+    , member: {
+        changeRole(idOfMember, newRole) {
             // Admin can do this.
-            return (async function changeMemberRole(){
+            return (async function changeMemberRole() {
                 let organisationReference = await Organisation.findById().exec();
                 organistationReference.members[idOfMember] = newRole;
 
-                try{
+                try {
                     organisationReference.save();
                 } catch (err) {
                     console.log(err);
                     return false;
+                }
+            }())
+        }
+    }
+    , user: {
+        getIdForEmail(emailOfUser) {
+            return (async function getUserIdForEmail() {
+                try {
+                    let userReference = await User.findOne({ 'email': emailOfUser }).exec();
+                    return userReference._id;
+                } catch (err) {
+                    throw new Error("E-Mail not found in MGMT");
                 }
             }())
         }
