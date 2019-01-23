@@ -1,17 +1,21 @@
 import React from 'react';
 import { Modal, Button } from 'react-materialize';
+import './ApprovalDialogue.css'
 
 export default function ApprovalDialogue(props) {
-    function onApprovalWrapper(){
+    function onApprovalWrapper() {
         props.onApproval(...props.args);
     }
-  return (
-    <span>
-        <Modal trigger={props.trigger} header='Are you sure?'>
-            <Button onClick={onApprovalWrapper}>Yes</Button>
-            <Button className="modal-close">No</Button>
-        </Modal>
-      </span>
-  )
+    return (
+        <span>
+            <Modal trigger={props.trigger} header='Are you sure?'>
+                <div className="right-align">
+                    <Button className="modal-close">No</Button>
+                    <span className="mgmt-dialogue-spacer"></span>
+                    <Button onClick={onApprovalWrapper}>Yes</Button>
+                </div>
+            </Modal>
+        </span>
+    )
 }
 
