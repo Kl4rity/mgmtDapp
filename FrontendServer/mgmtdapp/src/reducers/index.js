@@ -9,7 +9,8 @@ const rootReducer = combineReducers({
     organisations,
     user,
     roles,
-    loading
+    loading,
+    idExists
 });
 
 export default rootReducer;
