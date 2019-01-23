@@ -1,3 +1,3 @@
-export function setLoadingState(state) {
-    return {type: 'SET_LOADING_STATE', state};
+export function setLoadingState(loadingState) {
+    return {type: 'SET_LOADING_STATE', loadingState};
 }

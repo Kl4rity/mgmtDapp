@@ -1,3 +1,3 @@
-export function setIdExists(state) {
-    return {type: 'SET_ID_STATE', state};
+export function setIdExists(idExists) {
+    return {type: 'SET_ID_STATE', idExists};
 }
