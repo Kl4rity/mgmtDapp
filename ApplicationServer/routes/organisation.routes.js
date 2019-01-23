@@ -59,12 +59,29 @@ const addUser = (req, res) => {
     }())
 }
 
+const changeRole = (req, res) => {
+    (async function changeRole() {
+        let userToBeChanged = req.body.userId;
+        let organisationId = req.body.organisationId;
+        let newRole = req.body.newRole;
+
+        let hasPermission = await permissionService.field.member.changeRole(organisationId, req.user);
+
+        if (!!req.user & hasPermission) {
+            databaseService.member.changeRole(organisationId, userToBeChanged, newRole);
+            successResponse(req, res)
+        } else {
+            insufficientPermissions(req, res);
+        }
+    }())
+}
+
 const removeUser = (req, res) => {
     (async function removeUser() {
-        let userToBeRemoved = req.query.userId;
-        let organisationId = req.query.organisationId;
+        let userToBeRemoved = req.body.userId;
+        let organisationId = req.body.organisationId;
 
-        let hasPermission = await permissionService.field.organisation.removeMember(organisationId, userToBeRemoved);
+        let hasPermission = await permissionService.field.organisation.removeMember(organisationId, req.user);
 
         if (!!req.user & hasPermission) {
             databaseService.removeMember(organisationId, userToBeRemoved);
@@ -79,6 +96,7 @@ const initialize = () => {
     organisationRouter.post('/create/', createOrganisation);
     organisationRouter.post('/close/', closeOrganisation);
     organisationRouter.post('/add/', addUser);
+    organisationRouter.post('/changeRole/', changeRole);
     organisationRouter.post('/remove/', removeUser);
 
     return organisationRouter;

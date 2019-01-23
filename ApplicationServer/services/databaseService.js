@@ -184,10 +184,10 @@ const dataBaseService = {
         }
     }
     , member: {
-        changeRole(idOfMember, newRole) {
+        changeRole(organisationId, idOfMember, newRole) {
             // Admin can do this.
             return (async function changeMemberRole() {
-                let organisationReference = await Organisation.findById().exec();
+                let organisationReference = await Organisation.findById(organisationId).exec();
                 organistationReference.members[idOfMember] = newRole;
 
                 try {

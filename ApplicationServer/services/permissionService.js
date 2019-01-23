@@ -74,7 +74,7 @@ const permissionService = {
             }
         }
         , member : {
-            changeRole : () => {
+            changeRole : (organisationId, callingUser) => {
                 return (async function getAddMemberPermissionStatus(){
                     let roleObject = await permissionService.getRoleObjectForUserIdAndOrgansisation(organisationId,callingUser);
                     return roleObject.permissions.member.changeRole;
