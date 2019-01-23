@@ -22,7 +22,14 @@ class Members extends Component {
     let memberList = null;
     if (!!members && members.length > 0) {
       memberList = members.map((member, index) => {
-        return <MemberCard key={index} member={member} />
+        return <MemberCard 
+                key={index} 
+                member={member} 
+                members = {members}
+                user = {this.props.user}
+                roles = {this.props.roles}
+                organisationId = {this.match.params.id}
+                />
       });
     } else {
       return <li>No members to display.</li>

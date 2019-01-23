@@ -1,5 +1,7 @@
 import React from 'react'
 import {Card} from 'react-materialize';
+import RemoveMember from '../RemoveMember/RemoveMember';
+import RoleChanger from '../RoleChanger/RoleChanger';
 
 export default function memberCard(props) {
     let username = "";
@@ -10,8 +12,24 @@ export default function memberCard(props) {
 
   return (
     <Card className="hoverable" title={username}>
-      <div><span>Email: </span> <span>{props.member.email}</span></div>
-      <div><span>Role: </span> <span>{props.member.role}</span></div>
+      <div><span>Email:</span> <span>{props.member.email}</span></div>
+      <div><span>Role: </span>
+      <RoleChanger
+        roles = {props.roles}
+        memberList = {props.members}
+        user = {props.user}
+        organisationId = {props.organisationId}
+        userId = {props.member.id}
+        member = {props.member}
+      />
+      </div>
+      <RemoveMember
+        roles = {props.roles}
+        memberList = {props.members}
+        user = {props.user}
+        organisationId = {props.organisationId}
+        userId = {props.member.id}
+      />
     </Card>
   )
 }
