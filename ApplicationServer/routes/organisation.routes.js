@@ -1,9 +1,9 @@
-const debug = require('debug')("app:test.routes.ts");
-const passport = require('passport');
 const databaseService = require('../services/databaseService');
 const permissionService = require('../services/permissionService');
 const express = require('express');
 const insufficientPermissions = require('../util/insufficientPermissions');
+const serverError = require('../util/serverError');
+const successResponse = require('../util/successResponse');
 
 const organisationRouter = express.Router();
 
@@ -14,10 +14,9 @@ const createOrganisation = (req, res) => {
             let hasPermission = await permissionService.field.organisation.create();
             if (!!req.user & hasPermission) {
                 databaseService.organisation.create(req.user, req.body.organisationName);
-                res.send("OK");
+                successResponse(req, res)
             } else {
-                // Differentiate between not being logged in and not having the permissions?
-                insufficientPermissions(req, res);
+                serverError(req, res);
             }
         } catch (err) {
             console.log(err);
@@ -27,13 +26,13 @@ const createOrganisation = (req, res) => {
 
 const closeOrganisation = (req, res) => {
     (async function closeOrganisation() {
-        let organisationId = req.query.organisationId;
+        let organisationId = req.body.organisationId;
 
         let hasPermission = await permissionService.field.organisation.close(organisationId, req.user);
 
         if (!!req.user & hasPermission) {
             databaseService.organisation.close(organisationId);
-            res.send("OK");
+            successResponse(req, res);
         } else {
             insufficientPermissions(req, res);
         }
@@ -42,14 +41,18 @@ const closeOrganisation = (req, res) => {
 
 const addUser = (req, res) => {
     (async function addUser() {
-        let userToBeAddedId = req.query.userId;
-        let organisationId = req.query.organisationId;
-
+        console.log(req.body);
+        try {
+            let userToBeAddedId = await databaseService.user.getIdForEmail(req.body.email);
+        } catch (err){
+            serverError(req, res, "Email not found.");
+        }
+        let organisationId = req.body.organisationId;
         let hasPermission = await permissionService.field.organisation.addMember(organisationId, req.user);
 
         if (!!req.user & hasPermission) {
-            databaseService.addMember(organisationId, userToBeAddedId);
-            res.send("OK");
+            databaseService.organisation.addMember(organisationId, userToBeAddedId);
+            successResponse(req, res)
         } else {
             insufficientPermissions(req, res);
         }
@@ -65,7 +68,7 @@ const removeUser = (req, res) => {
 
         if (!!req.user & hasPermission) {
             databaseService.removeMember(organisationId, userToBeRemoved);
-            res.send("OK");
+            successResponse(req, res)
         } else {
             insufficientPermissions(req, res);
         }
@@ -74,9 +77,9 @@ const removeUser = (req, res) => {
 
 const initialize = () => {
     organisationRouter.post('/create/', createOrganisation);
-    organisationRouter.get('/close/', closeOrganisation);
-    organisationRouter.get('/add/', addUser);
-    organisationRouter.get('/remove/', removeUser);
+    organisationRouter.post('/close/', closeOrganisation);
+    organisationRouter.post('/add/', addUser);
+    organisationRouter.post('/remove/', removeUser);
 
     return organisationRouter;
 }
