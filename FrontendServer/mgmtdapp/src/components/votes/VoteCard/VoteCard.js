@@ -46,7 +46,7 @@ function formatDate(date) {
 export default function voteCard(props) {
     console.log(props.vote);
   return (
-    <Card title = {props.vote.name}>
+    <Card className="hoverable" title = {props.vote.name}>
         {displayDescriptionIfPresent(props.vote.description)}
         <div><span>Concluded: </span> <span>{(props.vote.hasEnded) ? "Yes" : "No"}</span> | <span>Ending: </span> <span>{formatDate(new Date(props.vote.endDate))}</span> | <span>Created: </span> <span>{formatDate(new Date(props.vote.creationDate))}</span></div>
         {calculateVoteStatus(props.vote.votes)}

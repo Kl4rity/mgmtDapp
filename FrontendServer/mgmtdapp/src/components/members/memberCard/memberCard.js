@@ -9,7 +9,7 @@ export default function memberCard(props) {
     }
 
   return (
-    <Card title={username}>
+    <Card className="hoverable" title={username}>
       <div><span>Email: </span> <span>{props.member.email}</span></div>
       <div><span>Role: </span> <span>{props.member.role}</span></div>
     </Card>
