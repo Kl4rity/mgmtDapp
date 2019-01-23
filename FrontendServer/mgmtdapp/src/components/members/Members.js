@@ -3,7 +3,6 @@ import MemberCard from './memberCard/memberCard';
 import { connect } from 'react-redux';
 import { Col } from 'react-materialize';
 import AddMemberModal from './AddMemberModal/AddMemberModal';
-import roleUtils from '../utils/roleUtils';
 
 class Members extends Component {
 
@@ -40,27 +39,19 @@ class Members extends Component {
     return organisationMembers;
   }
 
-  memberCanAddMembers(user, memberList, rolesList){
-    let canAddMemebers = false;
-    let userRole = roleUtils.getRoleForUserInOrganisation(user, memberList, rolesList);
-    if(!!userRole){
-      canAddMemebers = userRole.permissions.organisation.addMember;
-    }
-    return canAddMemebers;
-  }
-
   render() {
 
-    let addButton = null;
-    if (this.memberCanAddMembers(this.props.user, this.filterMembers(this.match.params.id), this.props.roles)) {
-      addButton = <AddMemberModal></AddMemberModal>;
+    let content = null;
+
+    if (this.props.idExists) {
+      content = <Col s={12} m={12} l={12}>
+        {this.displayMembersForId(this.match.params.id)}
+        <AddMemberModal organisationId={this.match.params.id} user={this.props.user} memberList={this.filterMembers(this.match.params.id)} roles={this.props.roles}></AddMemberModal>
+      </Col>
     }
 
     return (
-      <Col s={12} m={12} l={12}>
-        {this.displayMembersForId(this.match.params.id)}
-        {addButton}
-      </Col>
+      content
     )
   }
 }
@@ -69,7 +60,8 @@ function mapStateToProps(state, ownProps) {
   return {
     organisations: state.organisations,
     roles: state.roles,
-    user: state.user
+    user: state.user,
+    idExists: state.idExists
   }
 }
 
