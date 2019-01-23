@@ -8,3 +8,11 @@ nav .brand-logo{
     left: 50%;
     transform: translateX(-50%);
 }
+
+nav {
+    background-color: #26a69a;
+}
+
+.post-service-error-toast {
+    color: red;
+}

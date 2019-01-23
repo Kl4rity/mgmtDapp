@@ -12,8 +12,9 @@ import { connect } from 'react-redux';
 import fetchDataServiceSingleton from '../../services/fetchDataService';
 import Members from '../members/Members';
 import Organisation from '../organisations/organisation/Organisation';
-import { Container, Navbar, Row, Col } from 'react-materialize';
+import { Navbar, Row, Col } from 'react-materialize';
 import './MainContainer.css';
+import LoadingOverlay from '../common/LoadingOverlay';
 
 class MainContainer extends Component {
 
@@ -23,8 +24,15 @@ class MainContainer extends Component {
     fetchDataService.fetchAllUserData();
   }
   render() {
+
+    let loadingOverlay = null;
+    if(this.props.loading){
+      loadingOverlay = <LoadingOverlay></LoadingOverlay>
+    }
+
     return (
       <div>
+        {loadingOverlay}
         <Organisations />
         <Row className = 'mgmt-container'>
           <Col className='mgmt-container' s={0} m={0} l={3}></Col>
@@ -39,6 +47,7 @@ class MainContainer extends Component {
               <Switch>
                 <Route path="/organisation/:id/votes/" component={Votes} />
                 <Route path="/organisation/:id/members/" component={Members} />
+                <Route path="/404" component={Page404} exact/>
                 <Route path="/" exact component={BlankHomePage} />
                 <Route component={Page404} />
               </Switch>
@@ -51,7 +60,8 @@ class MainContainer extends Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-    user: state.user
+    user: state.user,
+    loading: state.loading
   }
 }
 
