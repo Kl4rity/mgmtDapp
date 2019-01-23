@@ -75,6 +75,7 @@ class FetchDataService {
                     newVoteObject.hasEnded = vote.ended;
                     let newVoteDescription = (vote.description) ? vote.desccription : null;
                     newVoteObject.description = newVoteDescription;
+                    newVoteObject.id = vote._id;
                     newVoteObject.votes = [];
                     vote.votes.forEach((individualVote) => {
                         let newIndividualVote = {};
