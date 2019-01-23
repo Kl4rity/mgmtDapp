@@ -21,7 +21,6 @@ export class Organisation extends Component {
     this.match = match;
     this.history = history;
     this.props.setIdExists(this.idExists());
-    console.log("ComponentWillReceivePropsCalled");
   }
 
    componentDidMount(){
@@ -33,7 +32,6 @@ export class Organisation extends Component {
   }
 
   idExists() {
-    console.log("IDExists called.");
     let idExists = false;
     if (!!this.props && !!this.props.organisations && this.props.organisations.length > 0) {
       this.props.organisations.forEach((organisation) => {
@@ -83,8 +81,6 @@ function mapStateToProps(state, ownProps) {
 function mapDispatchToProps(dispatch) {
   return {
     setIdExists: function (exists) {
-      console.log("dispatching");
-      console.log(exists);
       dispatch(setIdExists(exists))
 
     }
