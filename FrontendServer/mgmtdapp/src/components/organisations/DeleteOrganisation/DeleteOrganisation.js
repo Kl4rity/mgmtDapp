@@ -11,15 +11,9 @@ export class DeleteOrganisation extends Component {
         this.memberCanDeleteOrganisation = this.memberCanDeleteOrganisation.bind(this);
         this.displayDeleteOption = this.displayDeleteOption.bind(this);
         this.postDataService = postDataServiceSingleton.getPostServiceInstance();
-        if(props.organisationId){
-            console.log("An organisationID");
-            console.log(props.organisationId);
-        }
     }
 
     deleteOrganisation(organisationId){
-        console.log("This is the ID being sent:");
-        console.log(organisationId);
         this.postDataService.postData('https://localhost:3001/organisation/close/', {
             organisationId : organisationId
         });

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import {SideNavItem} from 'react-materialize';
+
 class AuthenticationButtons extends Component {
     
     constructor(props){
