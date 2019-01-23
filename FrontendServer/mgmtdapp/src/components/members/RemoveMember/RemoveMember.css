@@ -1,0 +1,11 @@
+.mgmt-members-delete-align-right-top{
+    right: 2%;
+    top: 12%;
+    position: absolute;
+    display: inline;
+    color: grey;
+}
+
+.mgmt-members-delete-align-right-top:hover {
+    cursor: pointer;
+}
