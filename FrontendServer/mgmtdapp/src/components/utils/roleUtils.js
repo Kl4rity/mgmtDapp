@@ -6,7 +6,6 @@ const roleUtils = {
                 let userRole = rolesList.filter((role) => {
                     return role.name == userMembership.role
                 })[0];
-                console.log(userRole);
                 return userRole;
             }
         }
