@@ -7,11 +7,12 @@ import { setIdExists } from '../../../actions/idExistsActions';
 
 export class Organisation extends Component {
 
-  constructor({ match, history }) {
+  constructor(props) {
     super();
-    this.match = match;
-    this.history = history;
-    this.id = match.params.id;
+    this.match = props.match;
+    this.history = props.history;
+    this.id = props.match.params.id;
+
     this.displaySwitchLinks = this.displaySwitchLinks.bind(this);
     this.idExists = this.idExists.bind(this);
   }
@@ -19,9 +20,20 @@ export class Organisation extends Component {
   componentWillReceiveProps({ match, history }) {
     this.match = match;
     this.history = history;
+    this.props.setIdExists(this.idExists());
+    console.log("ComponentWillReceivePropsCalled");
+  }
+
+   componentDidMount(){
+    if (!!this.props && !!this.idExists) {
+      if(this.idExists()){
+        this.props.setIdExists(this.idExists());
+      }
+    }
   }
 
   idExists() {
+    console.log("IDExists called.");
     let idExists = false;
     if (!!this.props && !!this.props.organisations && this.props.organisations.length > 0) {
       this.props.organisations.forEach((organisation) => {
@@ -29,9 +41,9 @@ export class Organisation extends Component {
           idExists = true;
         }
       });
-      this.props.setIdExists(idExists);
       return idExists;
     }
+    return idExists;
   }
 
   displaySwitchLinks() {
@@ -49,7 +61,7 @@ export class Organisation extends Component {
     let content = null;
 
     if (!this.idExists()) {
-      content = <Redirect to="/404"></Redirect>
+      content = <Redirect to="/"></Redirect>
     } else {
       content = <Row className='organisation-row'>
         {this.displaySwitchLinks()}
@@ -68,10 +80,13 @@ function mapStateToProps(state, ownProps) {
   }
 }
 
-function mapDispatchToProps(dispatch){
+function mapDispatchToProps(dispatch) {
   return {
-    setIdExists : function(exists){
+    setIdExists: function (exists) {
+      console.log("dispatching");
+      console.log(exists);
       dispatch(setIdExists(exists))
+
     }
   }
 }
