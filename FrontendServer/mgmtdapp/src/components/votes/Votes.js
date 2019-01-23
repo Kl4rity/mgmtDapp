@@ -27,7 +27,7 @@ class Votes extends Component {
         return <VoteCard vote={vote} key={index} />
       });
     } else {
-      voteList = <li>No votes to display</li>
+      voteList = <div className="center-align"><h3>No votes to display.</h3></div>
     }
     return voteList;
   }
@@ -53,6 +53,7 @@ class Votes extends Component {
   render() {
 
     let content = null;
+    console.log(this.props.idExists);
 
     if (this.props.idExists) {
       content = <Col l={12} m={12} s={12}>
