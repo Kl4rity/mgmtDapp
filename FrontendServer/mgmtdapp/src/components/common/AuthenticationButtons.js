@@ -11,7 +11,6 @@ class AuthenticationButtons extends Component {
     }
     displayLoginLogout() {
         let button = null;
-        console.log(this.props.user.id);
         if (!this.props.user.id) {
             button = <div><SideNavItem subheader>Account</SideNavItem> <SideNavItem href="https://localhost:3001/account/login">Login</SideNavItem></div>
         } else {
