@@ -42,7 +42,6 @@ class FetchDataService {
         }
     }
     convertJsonToDataStructure(responseJSON) {
-        console.log(responseJSON);
         let appData = {};
         appData.user = {
             username: responseJSON.user.username,
@@ -91,6 +90,8 @@ class FetchDataService {
                 appData.organisations.push(organisation);
             });
         }
+        console.log("Total data:");
+        console.log(appData);
         return appData;
     }
     parseDataIntoReduxStore(appData) {
