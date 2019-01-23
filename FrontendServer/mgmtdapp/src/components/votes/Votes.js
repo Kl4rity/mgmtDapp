@@ -24,7 +24,14 @@ class Votes extends Component {
     let voteList = null;
     if (!!votes && votes.length > 0) {
       voteList = votes.map((vote, index) => {
-        return <VoteCard vote={vote} key={index} />
+        return <VoteCard 
+          vote={vote} 
+          key={index} 
+          user = {this.props.user} 
+          roles = {this.props.roles}
+          memberList = {this.filterMembers(this.match.params.id)}
+          organisationId = {this.match.params.id}
+          />
       });
     } else {
       voteList = <div className="center-align"><h3>No votes to display.</h3></div>

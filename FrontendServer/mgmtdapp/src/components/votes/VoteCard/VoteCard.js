@@ -1,6 +1,7 @@
 import React from 'react'
 import VoteDisplay from '../VoteDisplay/VoteDisplay';
 import { Card } from 'react-materialize';
+import DeleteVote from '../DeleteVote/DeleteVote';
 
 function displayDescriptionIfPresent(description){
     let descriptionHTML = null;
@@ -44,12 +45,18 @@ function formatDate(date) {
   }
 
 export default function voteCard(props) {
-    console.log(props.vote);
   return (
     <Card className="hoverable" title = {props.vote.name}>
         {displayDescriptionIfPresent(props.vote.description)}
         <div><span>Concluded: </span> <span>{(props.vote.hasEnded) ? "Yes" : "No"}</span> | <span>Ending: </span> <span>{formatDate(new Date(props.vote.endDate))}</span> | <span>Created: </span> <span>{formatDate(new Date(props.vote.creationDate))}</span></div>
         {calculateVoteStatus(props.vote.votes)}
+        <DeleteVote 
+            organisationId = {props.organisationId}
+            user = {props.user}
+            memberList = {props.memberList}
+            roles = {props.roles}
+            idOfVote = {props.vote.id}
+            />
     </Card>
   )
 }
