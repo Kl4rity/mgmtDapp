@@ -32,8 +32,8 @@ const createVote = (req, res) => {
 const closeVote = (req, res) => {
     (async function closeVote(){
         try {
-            let voteId = req.query.idOfVote;
-            let organisationId = req.query.organisationId;
+            let voteId = req.body.idOfVote;
+            let organisationId = req.body.organisationId;
 
             let hasPermission = await permissionService.field.vote.close(organisationId, req.user);
 
@@ -119,7 +119,7 @@ const castVote = (req, res) => {
 
 const initialize = () => {
     voteRouter.post('/create', createVote);
-    voteRouter.get('/close', closeVote);
+    voteRouter.post('/close', closeVote);
     voteRouter.post('/remove', removeVote);
     voteRouter.get('/changeDeadline', changeDeadline);
     voteRouter.get('/cast', castVote);
