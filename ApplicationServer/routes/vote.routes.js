@@ -1,31 +1,30 @@
-const mongoose = require('mongoose');
-const debug = require('debug')("app:test.routes.ts");
-const passport = require('passport');
 const databaseService = require('../services/databaseService');
 const permissionService= require('../services/permissionService');
 const express = require('express');
 const insufficientPermissions = require('../util/insufficientPermissions');
+const serverError = require('../util/serverError.js');
+const successResponse = require('../util/successResponse');
 
 const voteRouter = express.Router();
 
 const createVote = (req, res) => {
     (async function createVote(){
         try {
-            let organisationId = req.query.organisationId;
-            let voteName = req.query.voteName;
-            let voteDescription = req.query.description;
-            let voteEndTime = req.query.endTime;
+            let organisationId = req.body.organisationId;
+            let voteName = req.body.name;
+            let voteDescription = req.body.description;
+            let voteEndTime = req.body.endDate;
 
             let hasPermission = await permissionService.field.vote.create(organisationId, req.user);
             if(!!req.user & hasPermission){
                 databaseService.vote.create(organisationId, voteName, voteDescription, voteEndTime);
-                res.send("OK");
+                successResponse(req, res);
             } else {
                 insufficientPermissions(req, res);
             }
         } catch (err) {
             console.log(err);
-            res.send("An Error occured.");
+            serverError(req, res);
         }
     }())
 }
@@ -40,13 +39,13 @@ const closeVote = (req, res) => {
 
             if(!!req.user & hasPermission){
                 databaseService.vote.close(voteId);
-                res.send("OK");
+                successResponse(req, res);
             } else {
-                insufficientPermissions();
+                insufficientPermissions(req, res);
             }
         } catch (err) {
             console.log(err);
-            res.send("An Error occured.");
+            serverError(req, res);
         }
     }())
 }
@@ -61,13 +60,13 @@ const removeVote = (req, res) => {
 
             if(!!req.user & hasPermission){
                 databaseService.vote.remove(voteId);
-                res.send("OK");
+                successResponse(req, res);
             } else {
-                insufficientPermissions();
+                insufficientPermissions(req, res);
             }
         } catch (err) {
             console.log(err);
-            res.send("An Error occured.");
+            serverError(req, res);
         }
     }())
 }
@@ -83,13 +82,13 @@ const changeDeadline = (req, res) => {
 
             if(!!req.user & hasPermission){
                 databaseService.vote.changeEndDate(voteId, newEndDate);
-                res.send("OK");
+                successResponse(req, res);
             } else {
-                insufficientPermissions();
+                insufficientPermissions(req, res);
             }
         } catch (err) {
             console.log(err);
-            res.send("An Error occured.");
+            serverError(req, res);
         }
     }())
 }
@@ -105,13 +104,13 @@ const castVote = (req, res) => {
 
             if(!!req.user & hasPermission){
                 databaseService.vote.cast(voteId, req.user.id, vote);
-                res.send("OK");
+                successResponse(req, res);
             } else {
-                insufficientPermissions();
+                insufficientPermissions(req, res);
             }
         } catch (err) {
             console.log(err);
-            res.send("An Error occured.");
+            serverError(req, res);
         }
     }())
 }
@@ -119,7 +118,7 @@ const castVote = (req, res) => {
 // Get role object?
 
 const initialize = () => {
-    voteRouter.get('/create', createVote);
+    voteRouter.post('/create', createVote);
     voteRouter.get('/close', closeVote);
     voteRouter.get('/remove', removeVote);
     voteRouter.get('/changeDeadline', changeDeadline);
