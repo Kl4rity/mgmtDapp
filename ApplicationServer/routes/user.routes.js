@@ -7,7 +7,6 @@ const roles = require('../models/Roles/roles');
 const userRouter = express.Router();
 
 const sendUserData = (req, res) => {
-    console.log(req.user);
     if(!!req.user){
         // Fetch all the data for a user.
         (async function getOrganisationsForUser(){
