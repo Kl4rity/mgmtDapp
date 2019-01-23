@@ -1,4 +1,5 @@
 import fetchDataService from './fetchDataService';
+import { setLoadingState } from '../actions/loadingActions';
 
 const postServiceSingleton = {
     serviceInstance : null,
@@ -20,7 +21,6 @@ class PostService {
             throw new Error("No store was passed to the constructor of the FetchDataService.");    
         }
         this.store = store;
-        console.log(fetchDataService);
     }
 
     postData(destinationURL, dataObject){
@@ -36,35 +36,42 @@ class PostService {
             'Content-Type': 'application/json'
                 },
             mode: 'cors'
-            }).then((response)=>{
-                console.log(response);
-                fetchDataService.getFetchDataService().fetchAllUserData();
-                // Throw error if status code is anything but 200.
-            }).catch((err)=>{
-                this.displayErrorMessage(err);
+            }).then(async (response)=>{
+                let responseMessage = await response.text();
+                switch(response.status){
+                    case 200:
+                        this.displayMessage(responseMessage);
+                        fetchDataService.getFetchDataService().fetchAllUserData();
+                        break;
+                    case 401:
+                        this.displayErrorMessage(responseMessage);
+                        break;
+                    case 500:
+                        this.displayErrorMessage(responseMessage);
+                        break;
+                    default:
+                        this.displayErrorMessage();
+                }
             }).finally(()=>{
                 this.setApplicationToDone();
             });
     }
 
-    displayErrorMessage(err){
-        console.log(err);
-        console.log(fetchDataService);
-        console.log("Display Error Message.");
+    displayMessage(message="Success!"){
+        window.Materialize.toast(message, 2000);
+    };
+
+    displayErrorMessage(err = "An unknown error occured."){
+        window.Materialize.toast(`<span class="post-service-error-toast">${err}</span>`, 3000)
     }
 
     setApplicationToLoading(){
-        console.log("Set Application to Loading.");
+        this.store.dispatch(setLoadingState(true));
     }
 
     setApplicationToDone(){
-        console.log("Set Application to Done.");
+        this.store.dispatch(setLoadingState(false));
     }
 }
-
-// Fetch-call
-// setStateToLoading
-// display warnings
-// setStateToDone
 
 export default postServiceSingleton;
